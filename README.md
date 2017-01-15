@@ -1,22 +1,23 @@
 # Signal-UWP
 
 Even though this project is called Signal, it is *by no means an official Whispersystems project*.
-It is intended to have a working Signal-like client for the UWP (Universal Windows Platform).
+It is intended to become a working Signal-like client for UWP (Universal Windows Platform).
 
 ## What to expect
 * Nothing
 
 ## Subprojects
-* curve25519 (external): by JeffR [https://github.com/langboost/libaxolotl-windows]
-* libaxolotl: java port of version 1.3.4 [https://github.com/WhisperSystems/libaxolotl-java]
-* libtextsecure: java port of version 1.6.0 [https://github.com/WhisperSystems/libtextsecure-java]
+* [curve25519](https://github.com/golf1052/curve25519-pcl) - by langboost
+* [libsignal-protocol-pcl](https://github.com/golf1052/libsignal-protocol-pcl) - C# port of libsignal-protocol-java
+* [libsignalservice-uwp](https://github.com/golf1052/libsignalservice-uwp) - C# port of libsignal-service-java
 * libsettings: A library for UserControls like a simpler UI for settings
 * SignalTask: Background processes needed for WNS push
 * Signal: The app
-* SignalTest: Unit tests for libaxolotl
+* SignalTest: Unit tests for libsignal-protocol-pcl
 
-Please excuse the code quality, lots of strange comments and all the other creepy stuff. 
-All of my C# programming experience comes from porting the libraries and creating this app.
+## Things To Know
+Install [SQLite for UWP](https://marketplace.visualstudio.com/items?itemName=SQLiteDevelopmentTeam.SQLiteforUniversalWindowsPlatform) then reference it on the Signal project (under Universal Windows -> Extensions)  
+Clone [libsignalservice-uwp](https://github.com/golf1052/libsignalservice-uwp) as well because the solution references that project.
 
-## Contact
+### Original developer
 * smndtrl (xmpp:simon@ssl.tophostingteam.de)

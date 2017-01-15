@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libaxolotl.state;
+using libsignal.state;
 using SQLite;
 using SQLite.Net;
 using SQLite.Net.Attributes;
@@ -26,7 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using libaxolotl;
+using libsignal;
 using Signal.Util;
 
 namespace TextSecure.crypto.storage
@@ -65,8 +65,6 @@ namespace TextSecure.crypto.storage
 
     public class TextSecurePreKeyStore : PreKeyStore, SignedPreKeyStore
     {
-
-
         private static readonly uint CURRENT_VERSION_MARKER = 1;
 
         SQLiteConnection conn;

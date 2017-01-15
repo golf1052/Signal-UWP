@@ -1,5 +1,5 @@
-﻿using libtextsecure;
-using libtextsecure.push;
+﻿using libsignalservice;
+using libsignalservice.push;
 using Signal.Tasks.Library;
 using Strilanc.Value;
 using System;
@@ -18,14 +18,14 @@ namespace Signal.Tasks
         private long timestamp;
         private string relay;
 
-        protected TextSecureMessageSender messageSender = new TextSecureMessageSender(TextSecureCommunicationFactory.PUSH_URL, new TextSecurePushTrustStore(), TextSecurePreferences.getLocalNumber(), TextSecurePreferences.getPushServerPassword(), new TextSecureAxolotlStore(),
-                                                                          May<TextSecureMessageSender.EventListener>.NoValue, App.CurrentVersion);
+        protected SignalServiceMessageSender messageSender = new SignalServiceMessageSender(TextSecureCommunicationFactory.PUSH_URL, new TextSecurePushTrustStore(), TextSecurePreferences.getLocalNumber(), TextSecurePreferences.getPushServerPassword(), new TextSecureAxolotlStore(),
+                                                                          May<SignalServiceMessageSender.EventListener>.NoValue, App.CurrentVersion);
 
 
-        public DeliveryReceiptTask(string destination, ulong timestamp, string relay)
+        public DeliveryReceiptTask(string destination, long timestamp, string relay)
         {
             this.destination = destination;
-            this.timestamp = (long)timestamp;
+            this.timestamp = timestamp;
             this.relay = relay;
         }
 
@@ -42,7 +42,7 @@ namespace Signal.Tasks
         protected override string Execute()
         {
             Log.Debug("DeliveryReceiptJob : Sending delivery receipt...");
-            TextSecureAddress textSecureAddress = new TextSecureAddress(destination, new May<string>(relay));
+            SignalServiceAddress textSecureAddress = new SignalServiceAddress(destination, new May<string>(relay));
 
             messageSender.sendDeliveryReceipt(textSecureAddress, (ulong)timestamp);
 

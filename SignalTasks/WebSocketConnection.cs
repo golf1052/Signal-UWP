@@ -1,8 +1,5 @@
-﻿
-
-using Google.ProtocolBuffers;
-/** 
-* Copyright (C) 2015 smndtrl
+﻿/** 
+* Copyright (C) 2015-2017 smndtrl, golf1052
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -17,9 +14,7 @@ using Google.ProtocolBuffers;
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using libaxolotl.util;
-using libtextsecure.push;
-using libtextsecure.util;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,7 +27,10 @@ using Windows.Foundation;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.Web;
-using static libtextsecure.websocket.WebSocketProtos;
+using static libsignalservice.websocket.WebSocketProtos;
+using libsignalservice.push;
+using libsignalservice.util;
+using Google.ProtocolBuffers;
 
 namespace SignalTasks
 {

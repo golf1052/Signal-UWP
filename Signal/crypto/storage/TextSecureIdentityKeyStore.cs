@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libaxolotl.state;
+using libsignal.state;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using libaxolotl;
+using libsignal;
 using SQLite;
 using System.IO;
 using TextSecure.database;

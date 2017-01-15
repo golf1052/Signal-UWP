@@ -1,7 +1,7 @@
-﻿using libtextsecure;
-using libtextsecure.messages;
-using libtextsecure.push;
-using libtextsecure.util;
+﻿using libsignalservice;
+using libsignalservice.messages;
+using libsignalservice.push;
+using libsignalservice.util;
 using Signal.Database;
 using Signal.Models;
 using Signal.Tasks.Library;
@@ -24,8 +24,8 @@ namespace Signal.Tasks
     class PushTextSendTask : PushSendTask
     {
         private long messageId;
-        protected TextSecureMessageSender messageSender = new TextSecureMessageSender(TextSecureCommunicationFactory.PUSH_URL, new TextSecurePushTrustStore(), TextSecurePreferences.getLocalNumber(), TextSecurePreferences.getPushServerPassword(), new TextSecureAxolotlStore(),
-                                                                                  May<TextSecureMessageSender.EventListener>.NoValue, App.CurrentVersion);
+        protected SignalServiceMessageSender messageSender = new SignalServiceMessageSender(TextSecureCommunicationFactory.PUSH_URL, new TextSecurePushTrustStore(), TextSecurePreferences.getLocalNumber(), TextSecurePreferences.getPushServerPassword(), new TextSecureAxolotlStore(),
+                                                                                  May<SignalServiceMessageSender.EventListener>.NoValue, App.CurrentVersion);
 
         public PushTextSendTask(long messageId, string destination) : base(destination)
         {
@@ -71,13 +71,13 @@ namespace Signal.Tasks
                 database.MarkAsSent(messageId);
 
             }
-            catch (libtextsecure.crypto.UntrustedIdentityException e)
+            catch (libsignalservice.crypto.UntrustedIdentityException e)
             {
-                Log.Debug($"Untrusted Identity Key: {e.IdentityKey} {e.E164Number}");
-                var recipients = RecipientFactory.getRecipientsFromString(e.E164Number, false);
+                Log.Debug($"Untrusted Identity Key: {e.getIdentityKey()} {e.getE164Number()}");
+                var recipients = RecipientFactory.getRecipientsFromString(e.getE164Number(), false);
                 long recipientId = recipients.getPrimaryRecipient().getRecipientId();
 
-                database.AddMismatchedIdentity(record.MessageId, recipientId, e.IdentityKey);
+                database.AddMismatchedIdentity(record.MessageId, recipientId, e.getIdentityKey());
                 database.MarkAsSentFailed(record.MessageId);
                 database.MarkAsPush(record.MessageId);
             }
@@ -95,9 +95,9 @@ namespace Signal.Tasks
         {
             try
             {
-                TextSecureAddress address = getPushAddress(message.IndividualRecipient.Number);
-                TextSecureDataMessage textSecureMessage = TextSecureDataMessage.newBuilder()
-                    .withTimestamp((ulong) TimeUtil.GetUnixTimestampMillis(message.DateSent))
+                SignalServiceAddress address = getPushAddress(message.IndividualRecipient.Number);
+                SignalServiceDataMessage textSecureMessage = SignalServiceDataMessage.newBuilder()
+                    .withTimestamp(TimeUtil.GetUnixTimestampMillis(message.DateSent))
                     .withBody(message.Body.Body)
                     .asEndSessionMessage(message.IsEndSession)
                     .build();

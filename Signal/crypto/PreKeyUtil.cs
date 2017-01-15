@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libaxolotl;
-using libaxolotl.ecc;
-using libaxolotl.state;
-using libaxolotl.util;
+using libsignal;
+using libsignal.ecc;
+using libsignal.state;
+using libsignal.util;
 using SQLite;
 using SQLite.Net;
 using System;

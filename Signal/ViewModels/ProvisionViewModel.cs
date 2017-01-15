@@ -1,11 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
-using libaxolotl;
-using libaxolotl.state;
-using libaxolotl.util;
-using libtextsecure.push.exceptions;
-using libtextsecure.util;
+using libsignal;
+using libsignal.state;
+using libsignal.util;
+using libsignalservice.push.exceptions;
+using libsignalservice.util;
 using Signal.database;
 using Signal.Models;
 using System;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libaxolotl.util;
+using libsignal.util;
 using Signal.Models;
 using Signal.Util;
 using SQLite;
@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using libaxolotl;
+using libsignal;
 using Signal.Messages;
 using TextSecure.recipient;
 using TextSecure.util;

@@ -1,6 +1,6 @@
-﻿using libaxolotl;
-using libaxolotl.state;
-using libtextsecure.push;
+﻿using libsignal;
+using libsignal.state;
+using libsignalservice.push;
 using Signal.Tasks.Library;
 using System;
 using System.Collections.Generic;

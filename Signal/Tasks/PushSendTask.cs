@@ -1,5 +1,5 @@
-﻿using libtextsecure;
-using libtextsecure.push;
+﻿using libsignalservice;
+using libsignalservice.push;
 using Signal.Tasks.Library;
 using Strilanc.Value;
 using System;
@@ -33,11 +33,11 @@ namespace Signal.Tasks
             throw new NotImplementedException("SendTask Execure");
         }
 
-        protected TextSecureAddress getPushAddress(String number)
+        protected SignalServiceAddress getPushAddress(String number)
         {
             String e164number = Utils.canonicalizeNumber(number);
             String relay = DatabaseFactory.getDirectoryDatabase().getRelay(e164number);
-            return new TextSecureAddress(e164number, relay == null ? May<string>.NoValue : new May<string>(relay));
+            return new SignalServiceAddress(e164number, relay == null ? May<string>.NoValue : new May<string>(relay));
         }
 
         //protected TextSecureMessageSender messageSender = new TextSecureMessageSender(TextSecureCommunicationFactory.PUSH_URL, new TextSecurePushTrustStore(), TextSecurePreferences.getLocalNumber(), TextSecurePreferences.getPushServerPassword(), new TextSecureAxolotlStore(),

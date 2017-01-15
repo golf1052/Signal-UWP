@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libaxolotl.state;
+using libsignal.state;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using libaxolotl;
+using libsignal;
 using SQLite;
 using System.IO;
-using libtextsecure.push;
+using libsignalservice.push;
 using SQLite.Net.Attributes;
 using SQLite.Net;
 
@@ -50,10 +50,10 @@ namespace TextSecure.crypto.storage
             conn.CreateTable<Session>();
         }
 
-        public bool ContainsSession(AxolotlAddress address)
+        public bool ContainsSession(SignalProtocolAddress address)
         {
-            var name = address.Name;
-            var deviceId = address.DeviceId;
+            var name = address.getName();
+            var deviceId = address.getDeviceId();
             var query = conn.Table<Session>().Where(v => v.Name == name && v.DeviceId == deviceId);
 
             return query.Count() != 0;
@@ -64,25 +64,25 @@ namespace TextSecure.crypto.storage
             var query = conn.Table<Session>().Delete(t => t.Name == name);
         }
 
-        public void DeleteSession(AxolotlAddress address)
+        public void DeleteSession(SignalProtocolAddress address)
         {
-            var name = address.Name;
-            var deviceId = address.DeviceId;
+            var name = address.getName();
+            var deviceId = address.getDeviceId();
             var query = conn.Table<Session>().Delete(t => t.Name == name && t.DeviceId == deviceId);
         }
 
         public List<uint> GetSubDeviceSessions(string name)
         {
-            var query = conn.Table<Session>().Where(t => t.Name == name && t.DeviceId != TextSecureAddress.DEFAULT_DEVICE_ID);
+            var query = conn.Table<Session>().Where(t => t.Name == name && t.DeviceId != SignalServiceAddress.DEFAULT_DEVICE_ID);
             var list = query.ToList();
             var output = list.Select(t => (uint)t.DeviceId).ToList();
             return output;
         }
 
-        public SessionRecord LoadSession(AxolotlAddress address)
+        public SessionRecord LoadSession(SignalProtocolAddress address)
         {
-            var name = address.Name;
-            var deviceId = address.DeviceId;
+            var name = address.getName();
+            var deviceId = address.getDeviceId();
             var query = conn.Table<Session>().Where(t => t.Name == name && t.DeviceId == deviceId);
 
             if (query != null && query.Any())
@@ -96,11 +96,11 @@ namespace TextSecure.crypto.storage
 
         }
 
-        public void StoreSession(AxolotlAddress address, SessionRecord record)
+        public void StoreSession(SignalProtocolAddress address, SessionRecord record)
         {
             DeleteSession(address); // TODO: sqlite-net combined private keys for insertOrReplace
 
-            var session = new Session() { DeviceId = address.DeviceId, Name = address.Name, Record = record.serialize() };
+            var session = new Session() { DeviceId = address.getDeviceId(), Name = address.getName(), Record = record.serialize() };
             conn.InsertOrReplace(session);
             return;
         }

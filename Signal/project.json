@@ -2,6 +2,7 @@
   "dependencies": {
     "Bezysoftware.Navigation.BackButton": "1.1.0",
     "curve25519-uwp": "1.0.4",
+    "Google.ProtocolBuffers": "2.4.1.555",
     "libphonenumber_uwp": "1.0.0",
     "Microsoft.CodeAnalysis.CSharp": "1.1.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",

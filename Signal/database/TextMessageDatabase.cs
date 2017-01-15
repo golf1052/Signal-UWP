@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using libaxolotl.util;
+using libsignal.util;
 using TextSecure.recipient;
 using Signal.Models;
 using Signal.Messages;

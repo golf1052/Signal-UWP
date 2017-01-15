@@ -1,5 +1,5 @@
 ﻿/** 
- * Copyright (C) 2015 smndtrl
+ * Copyright (C) 2015-2017 smndtrl
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,23 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libaxolotl.state;
-using libtextsecure.push;
+using libsignalservice.push;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
-using libaxolotl;
 using TextSecure.crypto.storage;
 using Signal.Database;
 using System.IO;
 using SQLite.Net;
+using libsignal.state;
+using libsignal;
 
 namespace TextSecure
 {
-    public class TextSecureAxolotlStore : AxolotlStore
+    public class TextSecureAxolotlStore : SignalProtocolStore
     {
         private readonly PreKeyStore preKeyStore;
         private readonly SignedPreKeyStore signedPreKeyStore;
@@ -56,7 +56,7 @@ namespace TextSecure
             return preKeyStore.ContainsPreKey(preKeyId);
         }
 
-        public bool ContainsSession(AxolotlAddress address)
+        public bool ContainsSession(SignalProtocolAddress address)
         {
             return sessionStore.ContainsSession(address);
         }
@@ -71,7 +71,7 @@ namespace TextSecure
             sessionStore.DeleteAllSessions(name);
         }
 
-        public void DeleteSession(AxolotlAddress address)
+        public void DeleteSession(SignalProtocolAddress address)
         {
             sessionStore.DeleteSession(address);
         }
@@ -101,7 +101,7 @@ namespace TextSecure
             return preKeyStore.LoadPreKey(preKeyId);
         }
 
-        public SessionRecord LoadSession(AxolotlAddress address)
+        public SessionRecord LoadSession(SignalProtocolAddress address)
         {
             return sessionStore.LoadSession(address);
         }
@@ -137,7 +137,7 @@ namespace TextSecure
             preKeyStore.StorePreKey(preKeyId, record);
         }
 
-        public void StoreSession(AxolotlAddress address, SessionRecord record)
+        public void StoreSession(SignalProtocolAddress address, SessionRecord record)
         {
             sessionStore.StoreSession(address, record);
         }
@@ -145,6 +145,16 @@ namespace TextSecure
         public void StoreSignedPreKey(uint signedPreKeyId, SignedPreKeyRecord record)
         {
             signedPreKeyStore.StoreSignedPreKey(signedPreKeyId, record);
+        }
+
+        public bool SaveIdentity(SignalProtocolAddress address, IdentityKey identityKey)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsTrustedIdentity(SignalProtocolAddress address, IdentityKey identityKey)
+        {
+            throw new NotImplementedException();
         }
     }
 }

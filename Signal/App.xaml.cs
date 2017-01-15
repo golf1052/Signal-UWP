@@ -1,5 +1,5 @@
 ﻿using Bezysoftware.Navigation.BackButton;
-using libtextsecure;
+using libsignalservice;
 using Signal.Push;
 using Signal.Tasks;
 using Signal.Tasks.Library;
@@ -12,7 +12,7 @@ using Windows.Networking.PushNotifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using libtextsecure.messages;
+using libsignalservice.messages;
 using Signal.Views;
 using GalaSoft.MvvmLight.Threading;
 using Signal.Util;
@@ -28,8 +28,8 @@ namespace Signal
     {
         public static new App Current => Application.Current as App;
 
-        public TextSecureAccountManager accountManager;
-        private TextSecureMessageReceiver messageReceiver;
+        public SignalServiceAccountManager accountManager;
+        private SignalServiceMessageReceiver messageReceiver;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code

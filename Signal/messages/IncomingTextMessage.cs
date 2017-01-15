@@ -1,5 +1,5 @@
 ﻿/** 
- * Copyright (C) 2015 smndtrl
+ * Copyright (C) 2015-2017 smndtrl, golf1052
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using libaxolotl.util;
-using libtextsecure.messages;
-using libtextsecure.push;
+using libsignal.util;
+using libsignalservice.messages;
+using libsignalservice.push;
 using Signal.Util;
 using Strilanc.Value;
 using TextSecure.util;
@@ -47,12 +47,12 @@ namespace Signal.Messages
 
         public string Message { get; }
         private string Sender { get; }
-        private uint SenderDeviceId { get; }
+        private int SenderDeviceId { get; }
         private int Protocol { get; }
         private string ServiceCenterAddress { get; }
         private bool ReplyPathPresent { get; }
         private string PseudoSubject { get; }
-        public ulong SentTimestampMillis { get; }
+        public long SentTimestampMillis { get; }
         public string GroupId { get; }
         private bool Push { get; }
 
@@ -70,8 +70,8 @@ namespace Signal.Messages
             this.push = false;
         }*/
 
-        public IncomingTextMessage(String sender, uint senderDeviceId, ulong sentTimestampMillis,
-                                   String encodedBody, May<TextSecureGroup> group)
+        public IncomingTextMessage(String sender, int senderDeviceId, long sentTimestampMillis,
+                                   String encodedBody, May<SignalServiceGroup> group)
         {
             this.Message = encodedBody;
             this.Sender = sender;
@@ -146,12 +146,12 @@ namespace Signal.Messages
         {
             this.Message = "";
             this.Sender = sender;
-            this.SenderDeviceId = TextSecureAddress.DEFAULT_DEVICE_ID;
+            this.SenderDeviceId = (int)SignalServiceAddress.DEFAULT_DEVICE_ID;
             this.Protocol = 31338;
             this.ServiceCenterAddress = "Outgoing";
             this.ReplyPathPresent = true;
             this.PseudoSubject = "";
-            this.SentTimestampMillis = (ulong)TimeUtil.GetUnixTimestampMillis();
+            this.SentTimestampMillis = (long)TimeUtil.GetUnixTimestampMillis();
             this.GroupId = groupId;
             this.Push = true;
         }
@@ -177,7 +177,7 @@ namespace Signal.Messages
             return Sender;
         }
 
-        public uint getSenderDeviceId()
+        public int getSenderDeviceId()
         {
             return SenderDeviceId;
         }

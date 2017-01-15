@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
-using libtextsecure;
-using libtextsecure.messages;
+using libsignalservice;
+using libsignalservice.messages;
 using Signal.Push;
 using Signal.Tasks;
 using Signal.Tasks.Library;
@@ -23,7 +23,7 @@ namespace Signal
         public TaskHelper TaskHelper = TaskHelper.getInstance();
         public TaskWorker Worker { get; private set; }
 
-        protected TextSecureMessagePipe pipe;
+        protected SignalServiceMessagePipe pipe;
 
         public static string CurrentVersion => $"TextSecure for Windows {Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}-{Package.Current.Id.Version.Revision}";
 
@@ -127,7 +127,7 @@ namespace Signal
             });
         }
 
-        private void OnMessageRecevied(TextSecureMessagePipe sender, TextSecureEnvelope envelope)
+        private void OnMessageRecevied(SignalServiceMessagePipe sender, SignalServiceEnvelope envelope)
         {
             Log.Debug("Push message recieved");
             var task = new PushContentReceiveTask();

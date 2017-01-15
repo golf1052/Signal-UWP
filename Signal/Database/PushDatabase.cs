@@ -1,4 +1,4 @@
-﻿using libtextsecure.messages;
+﻿using libsignalservice.messages;
 using SQLite.Net;
 using SQLite.Net.Attributes;
 using System;
@@ -34,7 +34,7 @@ namespace Signal.Database
             conn.CreateTable<Push>();
         }
 
-        public long Insert(TextSecureEnvelope envelope)
+        public long Insert(SignalServiceEnvelope envelope)
         {
             // TODO check if exists
             var push = new Push()
@@ -61,12 +61,12 @@ namespace Signal.Database
             conn.Delete<Push>(pushId);
         }
 
-        public TextSecureEnvelope GetEnvelope(long pushId)
+        public SignalServiceEnvelope GetEnvelope(long pushId)
         {
             var push = conn.Get<Push>(pushId);
 
 
-            return new TextSecureEnvelope((uint)push.Type, push.Source, (uint)push.DeviceId, "", (ulong)TimeUtil.GetUnixTimestamp(push.Timestamp),
+            return new SignalServiceEnvelope((int)push.Type, push.Source, (int)push.DeviceId, "", (long)TimeUtil.GetUnixTimestamp(push.Timestamp),
                 push.LegacyMessage.Equals("") ? null : Base64.decode(push.LegacyMessage),
                 push.Content.Equals("") ? null : Base64.decode(push.Content));
         }

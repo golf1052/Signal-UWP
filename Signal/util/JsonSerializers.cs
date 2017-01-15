@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using libaxolotl;
+using libsignal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -28,7 +28,7 @@ namespace Signal.Util
                 var token = JToken.Load(reader); // skip devices token
 
                 var str = token.Value<string>();
-                byte[] test = libtextsecure.util.Base64.decodeWithoutPadding(str);
+                byte[] test = libsignalservice.util.Base64.decodeWithoutPadding(str);
                 return new IdentityKey(test, 0);
 
             }
@@ -43,7 +43,7 @@ namespace Signal.Util
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             IdentityKey pubKey = (IdentityKey)value;
-            writer.WriteValue(libtextsecure.util.Base64.encodeBytesWithoutPadding(pubKey.serialize()));
+            writer.WriteValue(libsignalservice.util.Base64.encodeBytesWithoutPadding(pubKey.serialize()));
         }
     }
 }

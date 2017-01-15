@@ -1,15 +1,15 @@
-﻿using libaxolotl;
-using libaxolotl.state;
-using libtextsecure.crypto;
-using libtextsecure.messages;
-using libtextsecure.messages.multidevice;
-using libtextsecure.push;
+﻿using libsignal;
+using libsignal.state;
+using libsignalservice.crypto;
+using libsignalservice.messages;
+using libsignalservice.messages.multidevice;
+using libsignalservice.push;
 using Signal.Database;
 using Strilanc.Value;
 using System;
 using System.Threading.Tasks;
-using libaxolotl.protocol;
-using libaxolotl.util;
+using libsignal.protocol;
+using libsignal.util;
 using Signal.Messages;
 using Signal.Tasks.Library;
 using Signal.Util;
@@ -46,7 +46,7 @@ namespace Signal.Tasks
         protected override async Task<string> ExecuteAsync()
         {
             PushDatabase database = DatabaseFactory.getPushDatabase();
-            TextSecureEnvelope envelope = database.GetEnvelope(_pushMessageId);
+            SignalServiceEnvelope envelope = database.GetEnvelope(_pushMessageId);
             May<long> optionalSmsMessageId = _smsMessageId > 0 ? new May<long>(_smsMessageId) : May<long>.NoValue;
 
             handleMessage(envelope, optionalSmsMessageId);
@@ -55,19 +55,19 @@ namespace Signal.Tasks
             return "";
         }
 
-        private void handleMessage(TextSecureEnvelope envelope, May<long> smsMessageId)
+        private void handleMessage(SignalServiceEnvelope envelope, May<long> smsMessageId)
         {
             try
             {
-                AxolotlStore axolotlStore = new TextSecureAxolotlStore();
-                TextSecureAddress localAddress = new TextSecureAddress(TextSecurePreferences.getLocalNumber());
-                TextSecureCipher cipher = new TextSecureCipher(localAddress, axolotlStore);
+                SignalProtocolStore axolotlStore = new TextSecureAxolotlStore();
+                SignalServiceAddress localAddress = new SignalServiceAddress(TextSecurePreferences.getLocalNumber());
+                SignalServiceCipher cipher = new SignalServiceCipher(localAddress, axolotlStore);
 
-                TextSecureContent content = cipher.decrypt(envelope);
+                SignalServiceContent content = cipher.decrypt(envelope);
 
                 if (content.getDataMessage().HasValue)
                 {
-                    TextSecureDataMessage message = content.getDataMessage().ForceGetValue();
+                    SignalServiceDataMessage message = content.getDataMessage().ForceGetValue();
 
                     if (message.isEndSession()) handleEndSessionMessage(envelope, message, smsMessageId);
                     else if (message.isGroupUpdate()) handleGroupMessage(envelope, message, smsMessageId);
@@ -82,7 +82,7 @@ namespace Signal.Tasks
                     else if (syncMessage.getRequest().HasValue) handleSynchronizeRequestMessage(masterSecret, syncMessage.getRequest().ForceGetValue());
                 }*/
 
-                if (envelope.isPreKeyWhisperMessage())
+                if (envelope.isPreKeySignalMessage())
                 {
                     App.Current.Worker.AddTaskActivities(new RefreshPreKeysTask());
                     //ApplicationContext.getInstance(context).getJobManager().add(new RefreshPreKeysJob(context));
@@ -123,7 +123,7 @@ namespace Signal.Tasks
                 Log.Warn(e);
                 handleDuplicateMessage(envelope, smsMessageId);
             }
-            catch (libaxolotl.exceptions.UntrustedIdentityException e)
+            catch (libsignal.exceptions.UntrustedIdentityException e)
             {
                 Log.Warn(e);
                 handleUntrustedIdentityMessage(envelope, smsMessageId);
@@ -134,15 +134,15 @@ namespace Signal.Tasks
             }
         }
 
-        private void handleEndSessionMessage(TextSecureEnvelope envelope,
-                                             TextSecureDataMessage message,
+        private void handleEndSessionMessage(SignalServiceEnvelope envelope,
+                                             SignalServiceDataMessage message,
                                              May<long> smsMessageId)
         {
             var smsDatabase = DatabaseFactory.getTextMessageDatabase();//getEncryptingSmsDatabase(context);
             var incomingTextMessage = new IncomingTextMessage(envelope.getSource(),
                                                                                 envelope.getSourceDevice(),
                                                                                 message.getTimestamp(),
-                                                                                "", May<TextSecureGroup>.NoValue);
+                                                                                "", May<SignalServiceGroup>.NoValue);
 
             long threadId;
 
@@ -167,7 +167,7 @@ namespace Signal.Tasks
             //MessageNotifier.updateNotification(context, masterSecret.getMasterSecret().orNull(), threadId);
         }
 
-        private void handleGroupMessage(TextSecureEnvelope envelope, TextSecureDataMessage message, May<long> smsMessageId)
+        private void handleGroupMessage(SignalServiceEnvelope envelope, SignalServiceDataMessage message, May<long> smsMessageId)
         {
             //GroupMessageProcessor.process(envelope, message, false); // TODO: GROUP enable
 
@@ -179,7 +179,7 @@ namespace Signal.Tasks
 
         #region Synchronize
 
-        private void handleSynchronizeSentMessage(TextSecureEnvelope envelope, SentTranscriptMessage message, May<long> smsMessageId) // throws MmsException
+        private void handleSynchronizeSentMessage(SignalServiceEnvelope envelope, SentTranscriptMessage message, May<long> smsMessageId) // throws MmsException
         {
             long threadId;
 
@@ -291,7 +291,7 @@ namespace Signal.Tasks
 
 
 
-        private void handleMediaMessage(TextSecureEnvelope envelope, TextSecureDataMessage message, May<long> smsMessageId) // throws MmsException
+        private void handleMediaMessage(SignalServiceEnvelope envelope, SignalServiceDataMessage message, May<long> smsMessageId) // throws MmsException
         {
             throw new NotImplementedException("handleMediaMessage");
             /*
@@ -325,8 +325,8 @@ namespace Signal.Tasks
 
 
         private void handleTextMessage(/*@NonNull MasterSecretUnion masterSecret,*/
-                                       TextSecureEnvelope envelope,
-                                       TextSecureDataMessage message,
+                                       SignalServiceEnvelope envelope,
+                                       SignalServiceDataMessage message,
                                        May<long> smsMessageId)
         {
             var textMessageDatabase = DatabaseFactory.getTextMessageDatabase();
@@ -343,7 +343,7 @@ namespace Signal.Tasks
             
             ToastHelper.NotifyNewMessage(messageAndThreadId.second());
         }
-        private void handleInvalidVersionMessage(TextSecureEnvelope envelope,
+        private void handleInvalidVersionMessage(SignalServiceEnvelope envelope,
                                             May<long> smsMessageId)
         {
             var smsDatabase = DatabaseFactory.getTextMessageDatabase(); //getEncryptingSmsDatabase(context);
@@ -359,7 +359,7 @@ namespace Signal.Tasks
             }
         }
 
-        private void handleCorruptMessage(TextSecureEnvelope envelope,
+        private void handleCorruptMessage(SignalServiceEnvelope envelope,
                                      May<long> smsMessageId)
         {
             var smsDatabase = DatabaseFactory.getTextMessageDatabase(); //getEncryptingSmsDatabase(context);
@@ -374,7 +374,7 @@ namespace Signal.Tasks
                 smsDatabase.MarkAsDecryptFailed(smsMessageId.ForceGetValue());
             }
         }
-        private void handleNoSessionMessage(TextSecureEnvelope envelope,
+        private void handleNoSessionMessage(SignalServiceEnvelope envelope,
                                       May<long> smsMessageId)
         {
             var smsDatabase = DatabaseFactory.getTextMessageDatabase(); //getEncryptingSmsDatabase(context);
@@ -389,7 +389,7 @@ namespace Signal.Tasks
                 smsDatabase.MarkAsNoSession(smsMessageId.ForceGetValue());
             }
         }
-        private void handleLegacyMessage(TextSecureEnvelope envelope, May<long> smsMessageId)
+        private void handleLegacyMessage(SignalServiceEnvelope envelope, May<long> smsMessageId)
         {
             var smsDatabase = DatabaseFactory.getTextMessageDatabase(); //getEncryptingSmsDatabase(context);
 
@@ -404,7 +404,7 @@ namespace Signal.Tasks
             }
         }
 
-        private void handleDuplicateMessage(TextSecureEnvelope envelope, May<long> smsMessageId)
+        private void handleDuplicateMessage(SignalServiceEnvelope envelope, May<long> smsMessageId)
         {
             // Let's start ignoring these now
             //    SmsDatabase smsDatabase = DatabaseFactory.getEncryptingSmsDatabase(context);
@@ -419,19 +419,19 @@ namespace Signal.Tasks
         }
 
 
-        private void handleUntrustedIdentityMessage(TextSecureEnvelope envelope, May<long> smsMessageId)
+        private void handleUntrustedIdentityMessage(SignalServiceEnvelope envelope, May<long> smsMessageId)
         {
             try
             {
                 var database = DatabaseFactory.getTextMessageDatabase(); //getEncryptingSmsDatabase(context);
                 Recipients recipients = RecipientFactory.getRecipientsFromString(envelope.getSource(), false);
                 long recipientId = recipients.getPrimaryRecipient().getRecipientId();
-                PreKeyWhisperMessage whisperMessage = new PreKeyWhisperMessage(envelope.getLegacyMessage());
+                PreKeySignalMessage whisperMessage = new PreKeySignalMessage(envelope.getLegacyMessage());
                 IdentityKey identityKey = whisperMessage.getIdentityKey();
                 String encoded = Base64.encodeBytes(envelope.getLegacyMessage());
                 IncomingTextMessage textMessage = new IncomingTextMessage(envelope.getSource(), envelope.getSourceDevice(),
                                                                                envelope.getTimestamp(), encoded,
-                                                                               May<TextSecureGroup>.NoValue);
+                                                                               May<SignalServiceGroup>.NoValue);
 
                 if (!smsMessageId.HasValue)
                 {
@@ -461,12 +461,12 @@ namespace Signal.Tasks
 
         #endregion
 
-        private Pair<long, long> insertPlaceholder(TextSecureEnvelope envelope)
+        private Pair<long, long> insertPlaceholder(SignalServiceEnvelope envelope)
         {
             var database = DatabaseFactory.getTextMessageDatabase(); //getEncryptingSmsDatabase(context);
             IncomingTextMessage textMessage = new IncomingTextMessage(envelope.getSource(), envelope.getSourceDevice(),
                                                                         envelope.getTimestamp(), "",
-                                                                        May<TextSecureGroup>.NoValue);
+                                                                        May<SignalServiceGroup>.NoValue);
 
             textMessage = new IncomingEncryptedMessage(textMessage, "");
             return database.InsertMessageInbox(textMessage);

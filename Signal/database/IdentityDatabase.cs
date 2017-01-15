@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libaxolotl;
+using libsignal;
 using Signal.Util;
 using SQLite;
 using SQLite.Net;

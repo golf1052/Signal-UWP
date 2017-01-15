@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using libtextsecure.push;
+using libsignalservice.push;
 
 namespace Signal.Messages
 {
     internal class IncomingGroupMessage : IncomingTextMessage
     {
-        private readonly TextSecureProtos.GroupContext _groupContext;
+        private readonly SignalServiceProtos.GroupContext _groupContext;
 
-        public IncomingGroupMessage(IncomingTextMessage b, TextSecureProtos.GroupContext groupContext, string body) : base(b, body)
+        public IncomingGroupMessage(IncomingTextMessage b, SignalServiceProtos.GroupContext groupContext, string body) : base(b, body)
         {
             this._groupContext = groupContext;
         }
@@ -23,8 +23,8 @@ namespace Signal.Messages
 
         public new bool IsGroup => true;
 
-        public bool IsUpdate => _groupContext.Type.Equals(TextSecureProtos.GroupContext.Types.Type.UPDATE);
+        public bool IsUpdate => _groupContext.Type.Equals(SignalServiceProtos.GroupContext.Types.Type.UPDATE);
 
-        public bool IsQuit => _groupContext.Type.Equals(TextSecureProtos.GroupContext.Types.Type.QUIT);
+        public bool IsQuit => _groupContext.Type.Equals(SignalServiceProtos.GroupContext.Types.Type.QUIT);
     }
 }

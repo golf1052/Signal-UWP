@@ -1,7 +1,7 @@
-﻿using libtextsecure;
-using libtextsecure.messages;
-using libtextsecure.push;
-using libtextsecure.util;
+﻿using libsignalservice;
+using libsignalservice.messages;
+using libsignalservice.push;
+using libsignalservice.util;
 using Signal.Tasks.Library;
 using System;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace Signal.Tasks
             try
             {
                 String sessionKey = TextSecurePreferences.getSignalingKey();
-                TextSecureEnvelope envelope = new TextSecureEnvelope(data, sessionKey);
+                SignalServiceEnvelope envelope = new SignalServiceEnvelope(data, sessionKey);
 
                 handle(envelope, true);
             }

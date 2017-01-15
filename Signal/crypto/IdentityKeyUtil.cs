@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libaxolotl;
-using libaxolotl.ecc;
+using libsignal;
+using libsignal.ecc;
 using Signal.Util;
 using System;
 using System.Collections.Generic;

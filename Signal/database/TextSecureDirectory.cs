@@ -1,8 +1,5 @@
-﻿
-
-using GalaSoft.MvvmLight;
-/** 
-* Copyright (C) 2015 smndtrl
+﻿/** 
+* Copyright (C) 2015-2017 smndtrl, golf1052
 * 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -17,8 +14,10 @@ using GalaSoft.MvvmLight;
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using libtextsecure.push;
-using libtextsecure.util;
+
+using GalaSoft.MvvmLight;
+using libsignalservice.push;
+using libsignalservice.util;
 using Signal.Util;
 using SQLite;
 using SQLite.Net;

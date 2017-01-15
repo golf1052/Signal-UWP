@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Networking.Sockets;
 using Windows.Web;
-using libtextsecure;
-using libtextsecure.messages;
 
 namespace SignalTasks
 {

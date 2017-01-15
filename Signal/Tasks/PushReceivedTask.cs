@@ -1,6 +1,6 @@
-﻿using libtextsecure;
-using libtextsecure.messages;
-using libtextsecure.push;
+﻿using libsignalservice;
+using libsignalservice.messages;
+using libsignalservice.push;
 using Signal.Tasks.Library;
 using Strilanc.Value;
 using System;
@@ -31,7 +31,7 @@ namespace Signal.Tasks
             //throw new NotImplementedException("ReceiveTask Execute");
         }
 
-        public void handle(TextSecureEnvelope envelope, bool sendExplicitReceipt)
+        public void handle(SignalServiceEnvelope envelope, bool sendExplicitReceipt)
         {
             if (!isActiveNumber(envelope.getSource()))
             {
@@ -45,7 +45,7 @@ namespace Signal.Tasks
             }
 
             if (envelope.isReceipt()) handleReceipt(envelope);
-            else if (envelope.isPreKeyWhisperMessage() || envelope.isWhisperMessage())
+            else if (envelope.isPreKeySignalMessage() || envelope.isSignalMessage())
             {
                 handleMessage(envelope, sendExplicitReceipt);
             }
@@ -55,7 +55,7 @@ namespace Signal.Tasks
             }
         }
 
-        private void handleMessage(TextSecureEnvelope envelope, bool sendExplicitReceipt)
+        private void handleMessage(SignalServiceEnvelope envelope, bool sendExplicitReceipt)
         {
             var worker = App.Current.Worker;
             long messageId = DatabaseFactory.getPushDatabase().Insert(envelope);
@@ -71,7 +71,7 @@ namespace Signal.Tasks
             
         }
 
-        private void handleReceipt(TextSecureEnvelope envelope)
+        private void handleReceipt(SignalServiceEnvelope envelope)
         {
             Log.Debug($"Received receipt: (XXXXX, {envelope.getTimestamp()})");
             DatabaseFactory.getMessageDatabase().incrementDeliveryReceiptCount(envelope.getSource(),

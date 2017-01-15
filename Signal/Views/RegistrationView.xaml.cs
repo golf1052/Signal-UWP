@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libaxolotl;
-using libaxolotl.state;
-using libaxolotl.util;
-using libtextsecure.push.exceptions;
+using libsignal;
+using libsignal.state;
+using libsignal.util;
+using libsignalservice.push.exceptions;
 using Signal;
 using Signal.ViewModels;
 using System;

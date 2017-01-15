@@ -1,5 +1,5 @@
-﻿using libtextsecure;
-using libtextsecure.push;
+﻿using libsignalservice;
+using libsignalservice.push;
 using Signal.Tasks.Library;
 using Strilanc.Value;
 using System;

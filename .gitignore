@@ -209,8 +209,8 @@ ModelManifest.xml
 *.opt
 
 #Project specific overrides
-/libaxolotl/project.lock.json
-/libtextsecure/project.lock.json
+/libsignal/project.lock.json
+/libsignalservice/project.lock.json
 /TextSecure/project.lock.json
 /.vs/config/applicationhost.config
 

@@ -1,5 +1,5 @@
 ﻿/** 
- * Copyright (C) 2015 smndtrl
+ * Copyright (C) 2015-2017 smndtrl, golf1052
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libtextsecure;
-using libtextsecure.util;
+using libsignalservice;
+using libsignalservice.util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,23 +43,23 @@ namespace Signal.Push
 
         private static readonly string USER_AGENT = Signal.App.CurrentVersion;
 
-        public static TextSecureAccountManager createManager()
+        public static SignalServiceAccountManager createManager()
         {
-            return new TextSecureAccountManager(PUSH_URL,
+            return new SignalServiceAccountManager(PUSH_URL,
                                                 new TextSecurePushTrustStore(),
                                                 TextSecurePreferences.getLocalNumber(),
                                                 TextSecurePreferences.getPushServerPassword(), USER_AGENT);
         }
 
-        public static TextSecureAccountManager createManager(String number, String password)
+        public static SignalServiceAccountManager createManager(String number, String password)
         {
-            return new TextSecureAccountManager(PUSH_URL, new TextSecurePushTrustStore(),
+            return new SignalServiceAccountManager(PUSH_URL, new TextSecurePushTrustStore(),
                                                 number, password, USER_AGENT);
         }
 
-        public static TextSecureMessageReceiver createReceiver()
+        public static SignalServiceMessageReceiver createReceiver()
         {
-            return new TextSecureMessageReceiver(PUSH_URL,
+            return new SignalServiceMessageReceiver(PUSH_URL,
                                              new TextSecurePushTrustStore(),
                                              new DynamicCredentialsProvider(), USER_AGENT);
         }

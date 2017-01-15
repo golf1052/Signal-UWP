@@ -16,8 +16,8 @@ using Windows.UI.Xaml.Navigation;
 using Signal.Database;
 using Signal.Models;
 using GalaSoft.MvvmLight.Command;
-using libtextsecure.messages;
-using libtextsecure.push;
+using libsignalservice.messages;
+using libsignalservice.push;
 using Signal.Tasks;
 using Signal.Util;
 using TextSecure;
@@ -136,10 +136,10 @@ namespace Signal.Xaml.Controls
                                                      mismatch.RecipientId,
                                                      mismatch.IdentityKey);
 
-                TextSecureEnvelope envelope = new TextSecureEnvelope((uint)TextSecureProtos.Envelope.Types.Type.PREKEY_BUNDLE,
+                SignalServiceEnvelope envelope = new SignalServiceEnvelope((int)SignalServiceProtos.Envelope.Types.Type.PREKEY_BUNDLE,
                                                                      record.IndividualRecipient.getNumber(),
-                                                                     (uint)record.RecipientDeviceId, "",
-                                                                     (ulong)TimeUtil.GetUnixTimestamp(record.DateSent),
+                                                                     (int)record.RecipientDeviceId, "",
+                                                                     (long)TimeUtil.GetUnixTimestamp(record.DateSent),
                                                                      Base64.decode(record.Body.Body),
                                                                      null);
 
