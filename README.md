@@ -1,5 +1,7 @@
 # Signal-UWP
 
+## This has been superseded by [Signal-Windows](https://github.com/signal-csharp/Signal-Windows)
+
 Even though this project is called Signal, it is *by no means an official Whispersystems project*.
 It is intended to become a working Signal-like client for UWP (Universal Windows Platform).
 
